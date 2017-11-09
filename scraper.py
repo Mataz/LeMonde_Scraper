@@ -1,4 +1,4 @@
-# Le Monde - scrape.py - Scrape le bloc "En Continu" de la frontpage
+# Le Monde - scraper.py - Scrape le bloc "En Continu" de la frontpage
 # de Le monde.
 
 import bs4
