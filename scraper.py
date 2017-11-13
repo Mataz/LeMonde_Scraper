@@ -7,15 +7,12 @@ import csv
 
 source = requests.get('http://www.lemonde.fr/').text
 soup = bs4.BeautifulSoup(source, 'lxml')
+bloc = soup.find('ul', class_='liste_horaire')
 
 csv_file = open('lemonde_scrape.csv', 'w')
-
 csv_writer = csv.writer(csv_file)
 csv_writer.writerow(['Hours', 'Titles', 'Links'])
 
-
-
-bloc = soup.find('ul', class_='liste_horaire')
 for news in bloc.find_all('li'):
 
     hours = news.span.text
