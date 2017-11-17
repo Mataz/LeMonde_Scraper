@@ -1,17 +1,15 @@
-# Le Monde - scraper.py - Scrape le bloc "En Continu" de la frontpage
+# Le Monde - scrape.py - Scrape le bloc "En Continu" de la frontpage
 # de Le monde.
 
 import bs4
 import requests
 import csv
+import os.path
 
 source = requests.get('http://www.lemonde.fr/').text
 soup = bs4.BeautifulSoup(source, 'lxml')
-bloc = soup.find('ul', class_='liste_horaire')
 
-csv_file = open('lemonde_scrape.csv', 'w')
-csv_writer = csv.writer(csv_file)
-csv_writer.writerow(['Hours', 'Titles', 'Links'])
+bloc = soup.find('ul', class_='liste_horaire')
 
 for news in bloc.find_all('li'):
 
@@ -35,6 +33,16 @@ for news in bloc.find_all('li'):
 
     print()
 
-    csv_writer.writerow([hours, titles, lm_link])
+    filename = 'PATH_.CSV'
+    fileEmpty = os.stat(filename).st_size == 0
 
-csv_file.close()
+    with open(filename, 'a') as csv_file:
+        headers = ['Hours', 'Titles', 'Links']
+
+        csv_writer = csv.DictWriter(csv_file, fieldnames=headers,
+                                    delimiter='\t')
+        if fileEmpty:
+            csv_writer.writeheader()    # file doesn't exist, write header
+        csv_writer.writerow({'Hours': hours, 'Titles': titles, 'Links': lm_link})
+
+    csv_file.close()
